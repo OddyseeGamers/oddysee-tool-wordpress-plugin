@@ -9,17 +9,19 @@ Author URI:
 License: GPLv2 or later
 */
 
-include 'rsi_user.php';
+@include_once "$dir/user/rsi_user.php";
+
 function ot_activation() {
 	error_log("activate orgtool");
 	$res = fetchFromRSI(1);
 	error_log("rest " . $res);
-
 }
-register_activation_hook(__FILE__, 'ot_activation');
 
 function ot_deactivation() {
+	error_log("dectivate orgtool");
 }
+
+register_activation_hook(__FILE__, 'ot_activation');
 register_deactivation_hook(__FILE__, 'ot_deactivation');
 
 ?>
