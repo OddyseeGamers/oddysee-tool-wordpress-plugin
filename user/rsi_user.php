@@ -1,6 +1,5 @@
 <?php
 
-
 function fetchFromRSI($page) {
 	$memUrl = 'https://robertsspaceindustries.com/api/orgs/getOrgMembers';
 	$data = array('symbol' => 'ODDYSEE', 'pagesize' => '10', 'page' => $page );
@@ -78,11 +77,15 @@ function fetchFromRSI($page) {
 }
 
 function insertOrUpdate($user) {
-	error_log("user " . $user["name"]);
 	global $wpdb;
 	$table_name = $wpdb->prefix . "rsi_users";
-	$wpdb->insert($table_name, $user);
-//);
+	$results = $wpdb->get_row( 'SELECT * FROM ' . $table_name . ' WHERE handle = "' . $user["handle"] .'"');
+
+	if(isset($results->handle)) {
+		$wpdb->update($table_name, $user, array( 'handle' => $user["handle"]));
+	} else {
+		$wpdb->insert($table_name, $user);
+	}
 }
 
 
