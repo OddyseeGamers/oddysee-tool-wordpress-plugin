@@ -39,8 +39,7 @@ class OrgPlugin {
 		$res = true;
 		$page = 1;
 		while($res) {
-			$res = fetchFromRSI($page);
-			$page = $page + 1;
+			$res = fetchFromRSI($page++);
 		}
 	}
 

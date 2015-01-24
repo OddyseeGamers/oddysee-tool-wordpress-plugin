@@ -2,7 +2,7 @@
 
 function fetchFromRSI($page) {
 	$memUrl = 'https://robertsspaceindustries.com/api/orgs/getOrgMembers';
-	$data = array('symbol' => 'ODDYSEE', 'pagesize' => '10', 'page' => $page );
+	$data = array('symbol' => 'ODDYSEE', 'pagesize' => '255', 'page' => $page );
 
 	// use key 'http' even if you send the request to https://...
 	$options = array(
