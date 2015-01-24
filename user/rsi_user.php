@@ -3,7 +3,7 @@
 
 function fetchFromRSI($page) {
 	$memUrl = 'https://robertsspaceindustries.com/api/orgs/getOrgMembers';
-	$data = array('symbol' => 'ODDYSEE', 'pagesize' => '255', 'page' => $page );
+	$data = array('symbol' => 'ODDYSEE', 'pagesize' => '10', 'page' => $page );
 
 	// use key 'http' even if you send the request to https://...
 	$options = array(
@@ -19,7 +19,6 @@ function fetchFromRSI($page) {
 	$var = json_decode($result, true);
 	$str = $var["data"]["html"];
 
-	echo "succ " . $var["success"];
 	if (!strlen($str) || $var["success"] != "1" ) {
 		return false;
 	}
@@ -61,18 +60,29 @@ function fetchFromRSI($page) {
 					}
 				}
 			}
-			$userarr = array( "handle" => $handle, "name" => $name, "img" => $img, "role" => $role, "roles" => $roles, "rank" => $rank );
+
+			$userarr = array("handle" => $handle,
+					"name" => $name, 
+					"img" => $img, 
+					"role" => $role,
+					"roles" => implode(", ", $roles),
+					"rank" => $rank,
+					'time' => current_time( 'mysql' ) );
 			insertOrUpdate($userarr);
 		} else {
 			// ignore reducted user
-//             echo "REDUCTED" . "\n";
+			// error_log("ignore reducted user");
 		}
 	}
 	return true;
 }
 
 function insertOrUpdate($user) {
-//     echo "user " . $user["name"] . "\n";
+	error_log("user " . $user["name"]);
+	global $wpdb;
+	$table_name = $wpdb->prefix . "rsi_users";
+	$wpdb->insert($table_name, $user);
+//);
 }
 
 
